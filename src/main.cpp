@@ -54,6 +54,24 @@ byte CRC;
 byte deviceCRC;
 byte deviceCount = 0;
 
+enum Command {
+    invalid = 0,
+    readStatus = 1,
+    readRom = 2,
+    readData = 3,
+    writeData = 4
+};
+Command command;
+
+void printBytes(const uint8_t* addr, uint8_t count, bool newline=false) {
+  for (uint8_t i = 0; i < count; i++) {
+    Serial.print(addr[i]>>4, HEX);
+    Serial.print(addr[i]&0x0f, HEX);
+  }
+  if (newline)
+    Serial.println();
+}
+
 void printMenu() {
     Serial.println("DS2502 Controller");
     Serial.println("--------------------------------------------------------------------------------");
@@ -69,15 +87,6 @@ void setup() {
     printMenu();
 }
 
-enum Command {
-    invalid = 0,
-    readStatus = 1,
-    readRom = 2,
-    readData = 3,
-    writeData = 4
-};
-Command command;
-
 void loop() {
     serialData = Serial.read();
     if(serialData != -1) {
@@ -89,48 +98,49 @@ void loop() {
                 Serial.println("Invalid command");
 
             } else {
-                if(command == readStatus) {
-                    Serial.println("Read Status");
+                onewire.reset();           // OneWire bus reset, always needed to start operation on the bus, returns a 1/TRUE if there's a device present.
+                deviceCount = 0;
 
-                } else if (command == readRom) {    
-                    Serial.println("Read Rom");
-                    
-                } else if (command == readData) {
-                    Serial.println("Reading Data ...");
+                while (true) {
+                    if (!onewire.search(addr)) {
+                        if (deviceCount == 0) {
+                            Serial.println("No DS2502(s) present");
+                        } 
+                        onewire.reset_search();
+                        break;
 
-                    onewire.reset();           // OneWire bus reset, always needed to start operation on the bus, returns a 1/TRUE if there's a device present.
-                    deviceCount = 0;
+                    } else {
+                        deviceCount++; 
+                        if(deviceCount != 1) Serial.println();
+                        Serial.print("Device number ");
+                        Serial.println(deviceCount, DEC);
 
-                    while (true) {
-                        if (!onewire.search(addr)) {
-                            if (deviceCount == 0) {
-                                Serial.println("No DS2502(s) present");
-                            } 
-                            onewire.reset_search();
+                        if ((CRC = OneWire::crc8(addr, 7)) != addr[7]) {
+                            Serial.println("Invalid ROM CRC");
+                            Serial.print("Calculated CRC:");
+                            Serial.println(CRC,HEX);    // HEX makes it easier to observe and compare
+                            Serial.print("DS2502 CRC:");
+                            Serial.println(addr[7],HEX);
                             break;
 
+                        } else if (addr[0] != 0x09) {
+                            Serial.print("Device ID is 0x");
+                            Serial.print(addr[0], HEX);
+                            Serial.println(" which is not a DS2502 (ID 0x9)");
+
                         } else {
-                            deviceCount++; 
-                            if(deviceCount != 1) Serial.println();
-                            Serial.print("Device number ");
-                            Serial.println(deviceCount, DEC);
+                            if(command == readStatus) {
+                                Serial.println("Reading Status ...");
 
-                            if ((CRC = OneWire::crc8(addr, 7)) != addr[7]) {
-                                Serial.println("Invalid ROM CRC");
-                                Serial.print("Calculated CRC:");
-                                Serial.println(CRC,HEX);    // HEX makes it easier to observe and compare
-                                Serial.print("DS2502 CRC:");
-                                Serial.println(addr[7],HEX);
-                                break;
+                            } else if (command == readRom) {    
+                                Serial.println("Reading Rom ...");
+                                Serial.print("ID: 0x");
+                                printBytes(addr+1, 6);
 
-                            } else if (addr[0] != 0x09) {
-                                Serial.print("Device ID is 0x");
-                                Serial.print(addr[0], HEX);
-                                Serial.println(" which is not a DS2502 (ID 0x9)");
+                            } else if (command == readData) {
+                                Serial.println("Reading Data ...");                                
 
-                            } else {
                                 onewire.write_bytes(readCommand, sizeof(readCommand));        // Read data command, leave ghost power on
-                                
                                 deviceCRC = onewire.read();             // DS250x generates a CRC for the command we sent, we assign a read slot and store it's value
                                 CRC = OneWire::crc8(readCommand, sizeof(readCommand));  // We calculate the CRC of the commands we sent using the library function and store it
 
@@ -150,13 +160,16 @@ void loop() {
                                     }
                                     Serial.println();   
                                 }
-                            }
-                        } 
-                    }
-                } else if (command == writeData) {
-                    Serial.println("Write Data");
-                }         
+
+                            } else if (command == writeData) {
+                                Serial.println("Write Data");
+                            }        
+                            
+                        }
+                    } 
+                } 
             }
+
             commandString = "";
             Serial.println();
             printMenu();
