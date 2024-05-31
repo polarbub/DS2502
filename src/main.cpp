@@ -1,4 +1,3 @@
-#include "Print.h"
 #include <Arduino.h>
 #include <OneWire/OneWire.h>
 
@@ -45,7 +44,9 @@ OneWire onewire(6);                    // OneWire bus on digital pin 6
 
 bool present;                // device present var
 byte readCommand[3] = {              // array with the commands to initiate a read, DS250x devices expect 3 bytes to start a read: command,LSB&MSB adresses
-    0xF0 , 0x00 , 0x00   };       // 0xF0 is the Read Data command, followed by 00h 00h as starting address(the beginning, 0000h)
+    0xF0, 0x00, 0x00};       // 0xF0 is the Read Data command, followed by 00h 00h as starting address(the beginning, 0000h)
+byte writeCommand[4] = { 
+    0xF0, 0x00, 0x00, 0x00};    
 int serialData = 0;
 // int command = 0;
 String commandString;
@@ -53,6 +54,11 @@ byte addr[8];
 byte CRC;
 byte deviceCRC;
 byte deviceCount = 0;
+uint16_t i = 0;
+
+#define DS2502SIZE 128
+byte dataToWrite[DS2502SIZE];
+uint16_t dataToWriteCount;
 
 enum Command {
     invalid = 0,
@@ -63,10 +69,16 @@ enum Command {
 };
 Command command;
 
-void printBytes(const uint8_t* addr, uint8_t count, bool newline=false) {
+enum {
+    none,
+    input,
+    confirm
+} writeState;
+
+void printBytes(const uint8_t* toPrint, uint8_t count, bool newline=false) {
   for (uint8_t i = 0; i < count; i++) {
-    Serial.print(addr[i]>>4, HEX);
-    Serial.print(addr[i]&0x0f, HEX);
+    Serial.print(toPrint[i]>>4, HEX);
+    Serial.print(toPrint[i]&0b00001111, HEX);
   }
   if (newline)
     Serial.println();
@@ -82,6 +94,16 @@ void printMenu() {
     Serial.print("> ");
 }
 
+void crcError(const char * location, byte dsCRC = deviceCRC) {
+    Serial.print("Invalid  ");
+    Serial.print(location);
+    Serial.println(" CRC");
+    Serial.print("Calculated CRC:");
+    Serial.println(CRC,HEX);    // HEX makes it easier to observe and compare
+    Serial.print("DS2502 CRC:");
+    Serial.println(dsCRC,HEX);
+}
+
 void setup() {
     Serial.begin(9600);
     printMenu();
@@ -92,21 +114,110 @@ void loop() {
     if(serialData != -1) {
         if(serialData == '\n') {
             Serial.println(commandString);
-            Serial.println();
 
-            if(commandString.length() > 1 || (command = (Command)commandString.toInt()) < 1 || command > 4) {
+            if(writeState == input) {
+                boolean safe = true;
+                // for(char c : commandString) {
+                commandString.replace(" ", "");
+                commandString.toUpperCase();
+                for(i = 0; i < commandString.length(); i++ ) {
+                    if(!isHexadecimalDigit(commandString.charAt(i))) {
+                        writeState = none;
+                        Serial.println("Non hex character found");
+                        safe = false;
+                        break;
+                    }
+                }
+
+                boolean first = true;
+                char sub;
+                if (safe) {
+                    dataToWriteCount = 0;
+                    for(i = 0; i < commandString.length(); i++) {
+                        char c = commandString.charAt(i);
+                        sub = isDigit(c) ? 0x30 : 0x37;
+                        
+                        if(first) {
+                            dataToWrite[dataToWriteCount] = ((c - sub)<<4);
+                        } else {
+                            dataToWrite[dataToWriteCount] |= (c - sub);
+                            dataToWriteCount++;
+                        }     
+                        
+                        first = !first;
+                    }
+                    if(!first) {
+                        Serial.println("Odd number of nibbles (hex characters). Check you didn't remove any leading zeros");
+                        writeState = none;
+                    } else if(dataToWriteCount == 0) {
+                        Serial.print("> ");
+                        commandString = "";
+                        return;
+                    } else {
+                         //ADD: Nice looking hex editor output for write confirm
+                        Serial.println();
+                        printBytes(dataToWrite, dataToWriteCount, true);
+                        Serial.println("Write this to DS2502? (Y,n)");
+                        Serial.print("> ");
+                        writeState = confirm;
+                        commandString = "";
+                        return;
+                    }  
+                }
+
+            } else if(writeState == confirm) {
+                commandString.toLowerCase();
+                if(commandString.equals("y")) {
+                    //ADD: Check if we overwriting anything before going for it
+                    //ADD: Choose starting address
+                    Serial.println("Writing Data ...");
+
+                    writeCommand[3] = dataToWrite[0];
+                    onewire.write_bytes(writeCommand, sizeof(writeCommand));        // Read data command, leave ghost power on
+                    deviceCRC = onewire.read();             // DS250x generates a CRC for the command we sent, we assign a read slot and store it's value
+                    CRC = OneWire::crc8(writeCommand, sizeof(writeCommand));  // We calculate the CRC of the commands we sent using the library function and store it
+
+                    if (CRC != deviceCRC) {      // Then we compare it to the value the ds250x calculated, if it fails, we print debug messages and abort
+                        crcError("command");
+                        
+                    } else {
+                        //ADD: Make this print out like a hex monitor
+                        Serial.println("Data is: ");   // For the printout of the data 
+                        //FIX: Test that the read reads the whole flash
+                        for (i = 0; i < DS2502SIZE; i++) {    // Now it's time to read the PROM data itself, each page is 32 bytes so we need 32 read commandss
+                            Serial.print(onewire.read());       // printout in ASCII
+                            Serial.print(" ");           // blank space
+                        }
+                        Serial.println();   
+                    }
+
+                    writeState = none;
+                } else if (commandString.equals("n")) {
+                    writeState = none;
+                    commandString = "";
+                    printMenu();
+                    return;
+                } else {
+                    Serial.print("> ");
+                    commandString = "";
+                    return;
+                }
+                
+            } else if(commandString.length() > 1 || (command = (Command)commandString.toInt()) < 1 || command > 4) {
                 Serial.println("Invalid command");
 
             } else {
                 onewire.reset();           // OneWire bus reset, always needed to start operation on the bus, returns a 1/TRUE if there's a device present.
+                onewire.reset_search();
                 deviceCount = 0;
 
+                Serial.println();
                 while (true) {
                     if (!onewire.search(addr)) {
                         if (deviceCount == 0) {
                             Serial.println("No DS2502(s) present");
                         } 
-                        onewire.reset_search();
+                        // onewire.reset_search();
                         break;
 
                     } else {
@@ -116,11 +227,7 @@ void loop() {
                         Serial.println(deviceCount, DEC);
 
                         if ((CRC = OneWire::crc8(addr, 7)) != addr[7]) {
-                            Serial.println("Invalid ROM CRC");
-                            Serial.print("Calculated CRC:");
-                            Serial.println(CRC,HEX);    // HEX makes it easier to observe and compare
-                            Serial.print("DS2502 CRC:");
-                            Serial.println(addr[7],HEX);
+                            crcError("command", addr[7]);
                             break;
 
                         } else if (addr[0] != 0x09) {
@@ -131,11 +238,12 @@ void loop() {
                         } else {
                             if(command == readStatus) {
                                 Serial.println("Reading Status ...");
+                                Serial.println("Not implemented yet");
 
                             } else if (command == readRom) {    
                                 Serial.println("Reading Rom ...");
                                 Serial.print("ID: 0x");
-                                printBytes(addr+1, 6);
+                                printBytes(addr + 1, 6, true);
 
                             } else if (command == readData) {
                                 Serial.println("Reading Data ...");                                
@@ -145,16 +253,12 @@ void loop() {
                                 CRC = OneWire::crc8(readCommand, sizeof(readCommand));  // We calculate the CRC of the commands we sent using the library function and store it
 
                                 if (CRC != deviceCRC) {      // Then we compare it to the value the ds250x calculated, if it fails, we print debug messages and abort
-                                    Serial.println("Invalid command CRC");
-                                    Serial.print("Calculated CRC:");
-                                    Serial.println(CRC,HEX);    // HEX makes it easier to observe and compare
-                                    Serial.print("DS250x readback CRC:");
-                                    Serial.println(deviceCRC,HEX);
-                                    // Since CRC failed, we abort the rest of the loop and start over
+                                    crcError("command");
                                 } else {
                                     //ADD: Make this print out like a hex monitor
                                     Serial.println("Data is: ");   // For the printout of the data 
-                                    for (byte i = 0; i < 32; i++) {    // Now it's time to read the PROM data itself, each page is 32 bytes so we need 32 read commandss
+                                    //FIX: Test that the read reads the whole flash
+                                    for (i = 0; i < DS2502SIZE; i++) {    // Now it's time to read the PROM data itself, each page is 32 bytes so we need 32 read commandss
                                         Serial.print(onewire.read());       // printout in ASCII
                                         Serial.print(" ");           // blank space
                                     }
@@ -162,9 +266,13 @@ void loop() {
                                 }
 
                             } else if (command == writeData) {
-                                Serial.println("Write Data");
+                                //ADD: Check if we overwriting anything before going for it
+                                Serial.println("Enter data to write in Hex. Make sure to have preceding zeros and to remove 0x from the start or h from the end. Spaces are optional");
+                                Serial.print("> ");
+                                commandString = "";
+                                writeState = input;
+                                return;
                             }        
-                            
                         }
                     } 
                 } 
