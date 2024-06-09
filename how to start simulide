@@ -1,0 +1,5 @@
+Command to start serial terminal proxy
+socat -d -d pty,raw,echo=0 pty,raw,echo=0
+
+picocom command
+picocom -b 9600 --omap crlf --imap lfcrlf /dev/pts/<pts from socat>
