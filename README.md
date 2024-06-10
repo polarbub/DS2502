@@ -1,6 +1,6 @@
 # Arduino based DS2502 controller
 
-The DS250x is a 512/1024bit add-only EPROM. You can add data but cannot change it. It is used mainly for device identification purposes like serial number, manufacturer data, unique identifiers, Dell Laptop Power supplies, etc. It uses the Maxim 1-wire bus.
+The DS2502 is a 1024bit add-only EPROM. You can add data but cannot change it. It is used mainly for device identification purposes like serial number, manufacturer data, unique identifiers, Dell Laptop Power supplies, etc. It uses the Maxim 1-wire bus.
 
 When cloning this repository make sure to also clone the submodules by using `git clone --recursive`. This repository has a submodule for the OneWire library and one for the Arduino core. Both are for the CMake build system.
 
