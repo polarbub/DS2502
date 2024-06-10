@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "DS2502")(type "KiCad")(uri "/home/polarbub/Documents/saves/Hardware/pcb/partLibs/LIB_DS2502+/DS2502+.kicad_sym")(options "")(descr ""))
+)

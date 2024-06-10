@@ -1,0 +1,98 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "f37fa955-80dc-4f57-add6-07f5da0e786a")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 111.76 99.06)
+		(size 12.7 8.89)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "ab3cc2a9-a651-499d-8379-ec7ef7721395")
+		(property "Sheetname" "Programmer"
+			(at 111.76 98.3484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "programmer.kicad_sch"
+			(at 111.76 108.5346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "DS2502_prog"
+				(path "/f37fa955-80dc-4f57-add6-07f5da0e786a"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 87.63 99.06)
+		(size 12.7 8.89)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "e7be4d89-5754-4a78-93ee-d799f9dd3adc")
+		(property "Sheetname" "Arduino"
+			(at 87.63 98.3484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Arduino.kicad_sch"
+			(at 87.63 108.5346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(property "Field2" ""
+			(at 87.63 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "DS2502_prog"
+				(path "/f37fa955-80dc-4f57-add6-07f5da0e786a"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

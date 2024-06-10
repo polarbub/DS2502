@@ -1,3 +1,20 @@
+/* 
+DS2502 is a multitool for DS2502 reading and programming
+Copyright (C) 2024 polarbub
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 3 as published by
+the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include <Arduino.h>
 #ifdef CMAKE
 #include <OneWire/OneWire.h>
@@ -5,14 +22,6 @@
 #include <OneWire.h>
 #endif
 
-/*Notes: 
-Uses lf not crlf
-Don't forget your 4.7k pullup to 5v for parasite power
-*/
-/*
-DS250x add-only programmable memory reader.
- The DS250x is a 512/1024bit add-only PROM(you can add data but cannot change it). It is used mainly for device identification purposes
- like serial number, mfgr data, unique identifiers, etc. It uses the Maxim 1-wire bus.*/
 #define progPin 7
 OneWire onewire(6);                    // OneWire bus on digital pin 6
 String commandString;
@@ -26,6 +35,7 @@ uint8_t Address;
 byte deviceCount;
 // bool writeAgain = false;
 
+//ADD: Status write command
 enum Command {
     invalid = 0,
     readStatus = 1,
