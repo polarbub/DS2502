@@ -1,0 +1,163 @@
+<circuit version="1.1.0-SR0" rev="2278" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Ground" CircId="Ground-4" mainComp="false" Show_id="false" Show_Val="false" Pos="-996,-144" rotation="0" hflip="1" vflip="1" label="Ground-4" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-9" mainComp="false" Show_id="false" Show_Val="false" Pos="-1004,-188" rotation="0" hflip="1" vflip="1" label="Voltimeter-9" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="TextComponent" CircId="TextComponent-11" mainComp="false" Show_id="false" Show_Val="false" Pos="-1024,-244" rotation="0" hflip="1" vflip="1" label="TextComponent-11" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="true" Text="DS2502" />
+
+<item itemtype="TextComponent" CircId="TextComponent-12" mainComp="false" Show_id="false" Show_Val="false" Pos="-1232,-244" rotation="0" hflip="1" vflip="1" label="TextComponent-12" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="true" Text="onewire" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-18" mainComp="false" Show_id="true" Show_Val="false" Pos="-1276,-160" rotation="0" hflip="1" vflip="1" label="5v" idLabPos="-28.1126,-21.4135" labelrot="0" valLabPos="-16,8" valLabRot="0" Voltage="5 V" Out="true" />
+
+<item itemtype="Ground" CircId="Ground-20" mainComp="false" Show_id="false" Show_Val="false" Pos="-1256,-184" rotation="0" hflip="1" vflip="1" label="Ground-20" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Switch" CircId="Switch-21" mainComp="false" Show_id="false" Show_Val="false" Pos="-1208,-200" rotation="180" hflip="1" vflip="1" label="Switch-21" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" />
+
+<item itemtype="Switch" CircId="Switch-22" mainComp="false" Show_id="true" Show_Val="false" Pos="-1200,-88" rotation="180" hflip="1" vflip="1" label="Prog" idLabPos="-12.1203,22.8799" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="true" DT="true" Poles="1" />
+
+<item itemtype="Resistor" CircId="Resistor-25" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="-1208,-164" rotation="0" hflip="1" vflip="1" label="Resistor-25" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="5000 Ω" />
+
+<item itemtype="Fixed Voltage" CircId="Fixed Voltage-28" mainComp="false" Show_id="true" Show_Val="false" Pos="-1124,-272" rotation="90" hflip="1" vflip="1" label="12v" idLabPos="-20.9998,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Voltage="12 V" Out="true" />
+
+<item itemtype="TextComponent" CircId="TextComponent-13" mainComp="false" Show_id="false" Show_Val="false" Pos="-1244,-140" rotation="0" hflip="1" vflip="1" label="TextComponent-13" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _px" Border="1 _px" Color="#ffffdc" Opacity="1" Font="Helvetica [Cronyx]" Font_Color="#000080" Font_Size="10 _px" Fixed_Width="true" Text="programming" />
+
+<item itemtype="Resistor" CircId="Resistor-29" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="-1124,-224" rotation="90" hflip="1" vflip="1" label="Resistor-29" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="10000 Ω" />
+
+<item itemtype="Mosfet" CircId="Mosfet-30" mainComp="false" Show_id="false" Show_Val="false" Pos="-1108,-88" rotation="720" hflip="1" vflip="1" label="Mosfet-30" idLabPos="18,0" labelrot="0" valLabPos="-16,20" valLabRot="0" P_Channel="false" Depletion="false" RDSon="1 Ω" Threshold="3 V" />
+
+<item itemtype="Ground" CircId="Ground-33" mainComp="false" Show_id="false" Show_Val="false" Pos="-1100,-48" rotation="0" hflip="1" vflip="1" label="Ground-33" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Capacitor" CircId="Capacitor-34" mainComp="false" ShowProp="Capacitance" Show_id="false" Show_Val="true" Pos="-1036,-108" rotation="450" hflip="1" vflip="1" label="Capacitor-34" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Capacitance="470 pF" Resistance="1 µΩ" InitVolt="0 V" ReaStep="0 ns" />
+
+<item itemtype="Mosfet" CircId="Mosfet-37" mainComp="false" Show_id="false" Show_Val="false" Pos="-1072,-112" rotation="720" hflip="1" vflip="1" label="Mosfet-37" idLabPos="18,0" labelrot="0" valLabPos="-16,20" valLabRot="0" P_Channel="false" Depletion="false" RDSon="1 Ω" Threshold="3 V" />
+
+<item itemtype="Resistor" CircId="Resistor-44" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="-1100,-132" rotation="90" hflip="1" vflip="1" label="Resistor-44" idLabPos="-16,-24" labelrot="0" valLabPos="-16,6" valLabRot="0" Resistance="10000 Ω" />
+
+<item itemtype="Mosfet" CircId="Mosfet-47" mainComp="false" Show_id="false" Show_Val="false" Pos="-1080,-224" rotation="720" hflip="1" vflip="1" label="Mosfet-47" idLabPos="18,0" labelrot="0" valLabPos="-16,20" valLabRot="0" P_Channel="true" Depletion="false" RDSon="1 Ω" Threshold="3 V" />
+
+<item itemtype="Switch" CircId="Switch-51" mainComp="false" Show_id="false" Show_Val="false" Pos="-960,-136" rotation="0" hflip="1" vflip="1" label="Switch-51" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" DT="false" Poles="1" />
+
+<item itemtype="Voltimeter" CircId="Voltimeter-52" mainComp="false" Show_id="false" Show_Val="false" Pos="-1208,-276" rotation="0" hflip="1" vflip="1" label="Voltimeter-52" idLabPos="-24,-40" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Probe" CircId="Probe-57" mainComp="false" Show_id="false" Show_Val="true" Pos="-908,-200" rotation="-45" hflip="1" vflip="1" label="Probe-57" idLabPos="16,-16" labelrot="45" valLabPos="16,0" valLabRot="45" ShowVolt="true" Threshold="2.5 V" />
+
+<item itemtype="Mosfet" CircId="Mosfet-14" mainComp="false" Show_id="false" Show_Val="false" Pos="-1128,-172" rotation="450" hflip="1" vflip="1" label="Mosfet-14" idLabPos="18,0" labelrot="0" valLabPos="-16,20" valLabRot="0" P_Channel="false" Depletion="false" RDSon="1 Ω" Threshold="3 V" />
+
+<item itemtype="Node" CircId="Node-26" mainComp="false" Pos="-1260,-160" />
+
+<item itemtype="Node" CircId="Node-27" mainComp="false" Pos="-1192,-164" />
+
+<item itemtype="Node" CircId="Node-35" mainComp="false" Pos="-1100,-68" />
+
+<item itemtype="Node" CircId="Node-41" mainComp="false" Pos="-1096,-68" />
+
+<item itemtype="Node" CircId="Node-42" mainComp="false" Pos="-1064,-68" />
+
+<item itemtype="Node" CircId="Node-43" mainComp="false" Pos="-1064,-188" />
+
+<item itemtype="Node" CircId="Node-45" mainComp="false" Pos="-1100,-112" />
+
+<item itemtype="Node" CircId="Node-46" mainComp="false" Pos="-1260,-148" />
+
+<item itemtype="Node" CircId="Node-49" mainComp="false" Pos="-1096,-188" />
+
+<item itemtype="Node" CircId="Node-50" mainComp="false" Pos="-1124,-248" />
+
+<item itemtype="Node" CircId="Node-53" mainComp="false" Pos="-1256,-200" />
+
+<item itemtype="Node" CircId="Node-55" mainComp="false" Pos="-1012,-164" />
+
+<item itemtype="Node" CircId="Node-56" mainComp="false" Pos="-996,-160" />
+
+<item itemtype="Node" CircId="Node-54" mainComp="false" Pos="-1164,-164" />
+
+<item itemtype="Node" CircId="Node-48" mainComp="false" Pos="-1072,-164" />
+
+<item itemtype="Node" CircId="Node-63" mainComp="false" Pos="-1124,-188" />
+
+<item itemtype="Connector" uid="Connector-32" startpinid="Node-26-1" endpinid="Resistor-25-lPin" pointList="-1260,-160,-1224,-160,-1224,-164" />
+
+<item itemtype="Connector" uid="Connector-33" startpinid="Fixed Voltage-18-outnod" endpinid="Node-26-0" pointList="-1260,-160,-1260,-160" />
+
+<item itemtype="Connector" uid="Connector-37" startpinid="Resistor-25-rPin" endpinid="Node-27-0" pointList="-1192,-164,-1192,-164" />
+
+<item itemtype="Connector" uid="Connector-38" startpinid="Node-27-2" endpinid="Switch-21-pinP0" pointList="-1192,-164,-1192,-200" />
+
+<item itemtype="Connector" uid="Connector-42" startpinid="Switch-22-pinP0" endpinid="Mosfet-30-Gate" pointList="-1184,-88,-1124,-88" />
+
+<item itemtype="Connector" uid="Connector-52" startpinid="Mosfet-30-Sour" endpinid="Node-35-0" pointList="-1100,-72,-1100,-68" />
+
+<item itemtype="Connector" uid="Connector-53" startpinid="Node-35-2" endpinid="Ground-33-Gnd" pointList="-1100,-68,-1100,-64" />
+
+<item itemtype="Connector" uid="Connector-67" startpinid="Node-41-2" endpinid="Node-35-1" pointList="-1096,-68,-1100,-68" />
+
+<item itemtype="Connector" uid="Connector-68" startpinid="Switch-22-switch1pinN" endpinid="Node-41-1" pointList="-1216,-80,-1216,-68,-1096,-68" />
+
+<item itemtype="Connector" uid="Connector-69" startpinid="Mosfet-37-Sour" endpinid="Node-42-1" pointList="-1064,-96,-1064,-68" />
+
+<item itemtype="Connector" uid="Connector-70" startpinid="Capacitor-34-rPin" endpinid="Node-42-0" pointList="-1036,-92,-1036,-68,-1064,-68" />
+
+<item itemtype="Connector" uid="Connector-71" startpinid="Node-42-2" endpinid="Node-41-0" pointList="-1064,-68,-1096,-68" />
+
+<item itemtype="Connector" uid="Connector-74" startpinid="Mosfet-37-Dren" endpinid="Node-43-1" pointList="-1064,-128,-1064,-188" />
+
+<item itemtype="Connector" uid="Connector-75" startpinid="Capacitor-34-lPin" endpinid="Node-43-0" pointList="-1036,-124,-1036,-188,-1064,-188" />
+
+<item itemtype="Connector" uid="Connector-77" startpinid="Resistor-44-rPin" endpinid="Node-45-1" pointList="-1100,-116,-1100,-112" />
+
+<item itemtype="Connector" uid="Connector-78" startpinid="Mosfet-30-Dren" endpinid="Node-45-0" pointList="-1100,-104,-1100,-112" />
+
+<item itemtype="Connector" uid="Connector-79" startpinid="Node-45-2" endpinid="Mosfet-37-Gate" pointList="-1100,-112,-1088,-112" />
+
+<item itemtype="Connector" uid="Connector-80" startpinid="Resistor-44-lPin" endpinid="Node-46-1" pointList="-1100,-148,-1260,-148" />
+
+<item itemtype="Connector" uid="Connector-81" startpinid="Node-26-2" endpinid="Node-46-0" pointList="-1260,-160,-1260,-148" />
+
+<item itemtype="Connector" uid="Connector-82" startpinid="Node-46-2" endpinid="Switch-22-switch0pinN" pointList="-1260,-148,-1260,-88,-1216,-88" />
+
+<item itemtype="Connector" uid="Connector-87" startpinid="Node-43-2" endpinid="Node-49-0" pointList="-1064,-188,-1096,-188" />
+
+<item itemtype="Connector" uid="Connector-89" startpinid="Mosfet-47-Dren" endpinid="Node-50-1" pointList="-1072,-240,-1072,-248,-1124,-248" />
+
+<item itemtype="Connector" uid="Connector-90" startpinid="Fixed Voltage-28-outnod" endpinid="Node-50-0" pointList="-1124,-256,-1124,-248" />
+
+<item itemtype="Connector" uid="Connector-91" startpinid="Node-50-2" endpinid="Resistor-29-lPin" pointList="-1124,-248,-1124,-240" />
+
+<item itemtype="Connector" uid="Connector-92" startpinid="Voltimeter-52-rPin" endpinid="Node-53-1" pointList="-1200,-260,-1200,-252,-1256,-252,-1256,-200" />
+
+<item itemtype="Connector" uid="Connector-93" startpinid="Ground-20-Gnd" endpinid="Node-53-0" pointList="-1256,-200,-1256,-200" />
+
+<item itemtype="Connector" uid="Connector-94" startpinid="Node-53-2" endpinid="Switch-21-switch0pinN" pointList="-1256,-200,-1224,-200" />
+
+<item itemtype="Connector" uid="Connector-98" startpinid="Switch-51-pinP0" endpinid="Node-55-1" pointList="-976,-136,-1012,-136,-1012,-164" />
+
+<item itemtype="Connector" uid="Connector-100" startpinid="Node-55-2" endpinid="Voltimeter-9-lPin" pointList="-1012,-164,-1012,-172" />
+
+<item itemtype="Connector" uid="Connector-101" startpinid="Node-56-1" endpinid="Switch-51-switch0pinN" pointList="-996,-160,-944,-160,-944,-136" />
+
+<item itemtype="Connector" uid="Connector-102" startpinid="Voltimeter-9-rPin" endpinid="Node-56-0" pointList="-996,-172,-996,-160" />
+
+<item itemtype="Connector" uid="Connector-103" startpinid="Node-56-2" endpinid="Ground-4-Gnd" pointList="-996,-160,-996,-160" />
+
+<item itemtype="Connector" uid="Connector-86" startpinid="Mosfet-47-Gate" endpinid="Node-49-1" pointList="-1096,-224,-1096,-188" />
+
+<item itemtype="Connector" uid="Connector-83" startpinid="Mosfet-47-Sour" endpinid="Node-48-1" pointList="-1072,-208,-1072,-164" />
+
+<item itemtype="Connector" uid="Connector-99" startpinid="Node-48-2" endpinid="Node-55-0" pointList="-1072,-164,-1012,-164" />
+
+<item itemtype="Connector" uid="Connector-97" startpinid="Node-54-2" endpinid="Mosfet-14-Sour" pointList="-1164,-164,-1144,-164" />
+
+<item itemtype="Connector" uid="Connector-96" startpinid="Node-27-1" endpinid="Node-54-0" pointList="-1192,-164,-1164,-164" />
+
+<item itemtype="Connector" uid="Connector-95" startpinid="Voltimeter-52-lPin" endpinid="Node-54-1" pointList="-1216,-260,-1216,-256,-1164,-256,-1164,-164" />
+
+<item itemtype="Connector" uid="Connector-84" startpinid="Mosfet-14-Dren" endpinid="Node-48-0" pointList="-1112,-164,-1072,-164" />
+
+<item itemtype="Connector" uid="Connector-123" startpinid="Mosfet-14-Gate" endpinid="Node-63-1" pointList="-1128,-188,-1124,-188" />
+
+<item itemtype="Connector" uid="Connector-124" startpinid="Resistor-29-rPin" endpinid="Node-63-0" pointList="-1124,-208,-1124,-188" />
+
+<item itemtype="Connector" uid="Connector-125" startpinid="Node-63-2" endpinid="Node-49-2" pointList="-1124,-188,-1096,-188" />
+
+</circuit>

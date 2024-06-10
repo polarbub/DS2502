@@ -1,0 +1,6 @@
+[submodule "software/src/libs/OneWire"]
+	path = software/src/libs/OneWire
+	url = https://github.com/PaulStoffregen/OneWire.git
+[submodule "software/src/libs/ArduinoCore-avr"]
+	path = software/src/libs/ArduinoCore-avr
+	url = https://github.com/arduino/ArduinoCore-avr.git
