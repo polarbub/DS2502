@@ -47,5 +47,3 @@ There are many useful resources that I used to complete this project. Here are a
 ## License 
 Everything except the software folder is licensed under Creative Commons Attribution-ShareAlike 4.0 International
 The software folder is licensed under the GPLv3
-
-format of dell chargers 
