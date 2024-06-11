@@ -1,10 +1,8 @@
 # Arduino based DS2502 controller
 
-The DS2502 is a 1024bit add-only EPROM. You can add data but cannot change it. It is used mainly for device identification purposes like serial number, manufacturer data, unique identifiers, Dell Laptop Power supplies, etc. It uses the Maxim 1-wire bus.
+The DS2502 is a 1024bit add-only EPROM. You can add data but cannot change it. It is used mainly for device identification purposes like serial number, manufacturer data, unique identifiers, Dell Laptop Power supplies, etc. It uses the Maxim 1-wire bus. This repository is kind of like a multitool for DS2502s. It lets you read, write, check the status, and check the ID of these chips and all with a (fairly) intuitive interface. If you have any issues or questions feel free to make a GitHub issue.
 
 When cloning this repository make sure to also clone the submodules by using `git clone --recursive`. This repository has a submodule for the OneWire library and one for the Arduino core. Both are for the CMake build system.
-
-If you have any issues or questions feel free to make a GitHub issue.
 
 ## Software
 There are two ways to build the software. The first one is as a normal Arduino sketch. To use it open `software/src/src.ino` in the Arduino IDE and upload. Make sure to have the [OneWire library](https://www.arduino.cc/reference/en/libraries/onewire/) installed. The second way is with CMake. This method was made to allow the software to be written in IDEs other than the Arduino IDE. It probably won't build on platforms other than Linux and it definitely won't work for anything other than a Arduino Uno, but could be adapted easily to fix either of those issues.
@@ -13,7 +11,7 @@ The software will only work with LF line endings. It will not work with CR or CR
 
 This program, unlike many others, does read the identification rom of the DS2502, so it will give a comprehensive error when it finds a device that is not a DS2502 instead of a CRC one. This also allows it to handle having multiple DS2502s on the same OneWire bus.
 
-The software supports all DS2502 functions except writing to the status register. Adding support for that would be relatively simple though.
+The software has two main limitations. It doesn't support writing to the status register or crc checks on subsequent writes. Adding support for the former would be relatively simple, but I can't find an example of where the latter works.
 
 ## Hardware
 The programmer schematic in the hardware folder is just a copy of the first circuit of figure 8 in the [DS2502 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/DS2502.pdf). The PCB is just a layed out version of the programmer. The arduino schematic shows how to hook up an Arduino to a DS2502 for reading only.

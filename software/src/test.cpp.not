@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <Arduino.h>
 #ifdef CMAKE
+#include <Arduino.h>
 #include <OneWire/OneWire.h>
 #else
 #include <OneWire.h>
@@ -40,9 +40,6 @@ bool checkCRC(const char * location, byte* data, byte length, byte deviceCRC = o
 }
 
 void setup() {
-    goto lable;
-
-    lable:
     Serial.begin(9600);
 
     #define progPin 7
@@ -50,10 +47,14 @@ void setup() {
     pinMode(progPin, OUTPUT);
     
     #define DS2502SIZE 128 
-    byte dataToWriteCount = DS2502SIZE;
+    byte dataToWriteCount = 1;
     byte dataBuffer[DS2502SIZE];
+    dataBuffer[0] = 0xFF;
     byte writeCommand[4] = {0x0F, 0x00, 0x00, 0x00};    
     
+
+    Serial.println(onewire.reset());
+    return;
     
     if(!onewire.reset()) {
       return;

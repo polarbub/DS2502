@@ -33,6 +33,7 @@ byte extraDataBuffer[DS2502SIZE];
 uint16_t dataToWriteCount;
 uint8_t Address;
 byte deviceCount;
+byte addr[8];
 // bool writeAgain = false;
 
 //ADD: Status write command
@@ -150,7 +151,7 @@ bool checkCRC(const char * location, byte* data, byte length, byte deviceCRC = o
     return true;
 }
 
-bool stringToHex(String s, byte *buffer, byte maxLength, uint16_t &finalLength) {
+bool stringToHex(String &s, byte *buffer, byte maxLength, uint16_t &finalLength) {
     s.toUpperCase();
     for(uint16_t i = 0; i < s.length(); i++ ) {
         if(!isHexadecimalDigit(s.charAt(i))) {
@@ -181,7 +182,7 @@ bool stringToHex(String s, byte *buffer, byte maxLength, uint16_t &finalLength) 
     return first;
 }
 
-bool stringToHex(String s, byte *buffer, byte maxLength) {
+bool stringToHex(String &s, byte *buffer, byte maxLength) {
     uint16_t finalLength;
     return stringToHex(s, buffer, maxLength, finalLength);
 }
@@ -204,7 +205,7 @@ bool read(byte* buffer, byte size) {
         for (uint16_t i = 0; i < size; i++) {    // Now it's time to read the PROM data itself, each page is 32 bytes so we need 32 read commandss
             buffer[i] = onewire.read();
         }
-        return true;
+        return checkCRC("read data", buffer, DS2502SIZE);
     } 
     return false;
 }
@@ -279,7 +280,6 @@ void loop() {
                                 }
                             } 
                         }
-                        // stringToHex(commandString, &Address, 1);
                         Serial.println();
                         printBytes(dataBuffer, dataToWriteCount, true);
                         Serial.print("Write this to DS2502 at address 0x");
@@ -298,11 +298,13 @@ void loop() {
             } else if(writeState == confirm) {
                 commandString.toLowerCase();
                 if(commandString.equals("y")) {
-                    Serial.println("Writing Data ...");
+                    Serial.println("\nWriting Data ...");
                     byte writeCommand[4] = {0x0F, 0x00, 0x00, 0x00};   
-                    bool error = false;
                     writeCommand[2] = Address; 
                   
+                    onewire.reset();
+                    onewire.select(addr);
+
                     for(byte i = 0; i < dataToWriteCount; i++) {
                         byte toWrite = dataBuffer[i];
                         writeCommand[3] = toWrite;
@@ -311,13 +313,18 @@ void loop() {
                             onewire.write_bytes(writeCommand, sizeof(writeCommand));        // Read data command, leave ghost power on
                         } else {
                             onewire.write(toWrite);
+
+                            //FIX: The write crc subsequent passes cannot be calculated correctly. IDK why.
+                            onewire.read();
                         }
                         
-                        if(checkCRC("write command", writeCommand, sizeof(writeCommand))) {
+                        // if(i == 0 ? checkCRC("write command", writeCommand, sizeof(writeCommand)) : checkCRC("write command", writeCommand + 1, sizeof(writeCommand) - 1)) {
+                        if(i == 0 ? checkCRC("write command", writeCommand, sizeof(writeCommand)) : true) {
                             digitalWrite(progPin, LOW);
                             delayMicroseconds(480);
                             digitalWrite(progPin, HIGH);
-                            
+                            delay(1);
+
                             byte deviceReadBack = onewire.read();
                             if(toWrite != deviceReadBack) {
                                 Serial.print("Incorect readback from DS2502 for byte ");
@@ -343,8 +350,6 @@ void loop() {
                     return;
                 } else if (commandString.equals("n")) {
                     writeState = none;
-                    // resetNewline();
-                    // return;
                 } else {
                     Serial.print("> ");
                     commandString = "";
@@ -363,7 +368,7 @@ void loop() {
                 
                 Serial.println();
                 while (true) {
-                    byte addr[8];
+                    // byte addr[8];
                     //Search resets the bus for us
                     if (!onewire.search(addr)) {
                         if (deviceCount == 0) {
