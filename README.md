@@ -13,6 +13,8 @@ This program, unlike many others, does read the identification rom of the DS2502
 
 The software has two main limitations. It doesn't support writing to the status register or crc checks on subsequent writes. Adding support for the former would be relatively simple, but I can't find an example of where the latter works.
 
+If you get a CRC error where the DS2052 CRC is FF then it likely means that the DS2502 was disconnected. This is because the OneWire bus is pulled up to a logical 1 and if there is no DS2502 to bring it to ground it will read 0xFF (0b11111111).
+
 ## Hardware
 The programmer schematic in the hardware folder is just a copy of the first circuit of figure 8 in the [DS2502 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/DS2502.pdf). The PCB is just a layed out version of the programmer. The arduino schematic shows how to hook up an Arduino to a DS2502 for reading only.
 
